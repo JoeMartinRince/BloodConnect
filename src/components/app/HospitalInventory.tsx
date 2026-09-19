@@ -33,76 +33,118 @@ export function HospitalInventory() {
   return (
     <div className="space-y-6 animate-fade-up">
       {/* Header Banner */}
-      <div className="rounded-3xl bg-card p-5 shadow-card border border-border/60">
+      <div className="rounded-3xl bg-card p-5 sm:p-6 shadow-card border border-border/60">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="flex size-11 items-center justify-center rounded-2xl bg-indigo-600 text-white font-bold">
               <Boxes className="size-6" />
             </div>
             <div>
-              <span className="text-xs font-bold uppercase tracking-wider text-indigo-600">Inventory Console</span>
-              <h1 className="text-xl font-extrabold text-foreground">Blood Inventory & Expiry Management</h1>
-              <p className="text-xs text-muted-foreground">Manage blood units, batch shelf-life & reservations.</p>
+              <span className="text-xs font-bold uppercase tracking-wider text-indigo-600">Hospital Inventory</span>
+              <h1 className="text-xl sm:text-2xl font-black text-foreground">Blood Inventory & Expiry Management</h1>
+              <p className="text-xs text-muted-foreground">Manage blood units, reserved stock, batch shelf-life & reservations.</p>
             </div>
           </div>
         </div>
       </div>
 
-      {/* EXPIRY ALERT BANNER */}
-      <div className="rounded-3xl bg-amber-500/10 p-5 border-2 border-amber-500/40 shadow-sm flex items-center gap-4">
-        <div className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-amber-500 text-white font-bold">
-          <AlertTriangle className="size-6" />
+      {/* ACTIONABLE EXPIRY ALERT BANNER */}
+      <div className="rounded-3xl bg-amber-500/10 p-5 border-2 border-amber-500/40 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-3.5">
+          <div className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-amber-500 text-white font-bold shadow-md">
+            <AlertTriangle className="size-6" />
+          </div>
+          <div className="space-y-0.5">
+            <h3 className="font-extrabold text-foreground text-sm flex items-center gap-2">
+              ⚠️ EXPIRING SOON: 2 units of O+ expire in 3 days
+            </h3>
+            <p className="text-xs text-muted-foreground">
+              Batch: <strong>#BB-02</strong> · Expiry: <strong>22 Sep 2026</strong>. Prioritize for immediate transfusion issue.
+            </p>
+          </div>
         </div>
-        <div className="space-y-0.5">
-          <h3 className="font-extrabold text-foreground text-sm flex items-center gap-2">
-            🟡 Batch Expiry Alert: 2 Units Expiring Soon
-          </h3>
-          <p className="text-xs text-muted-foreground">
-            O+ Batch #b-o2 (2 units) expires in 3 days (2026-09-22). Prioritize for immediate issue.
-          </p>
-        </div>
+
+        <Button
+          size="sm"
+          onClick={() => {
+            setSelectedGroup("O+");
+            toast.info("Opened Batch #BB-02 details for O+ inventory.");
+          }}
+          className="rounded-xl font-extrabold bg-amber-600 hover:bg-amber-700 text-white h-9 px-4 shrink-0 text-xs shadow-sm"
+        >
+          View Batch
+        </Button>
       </div>
 
-      {/* BLOOD GROUP CARDS GRID */}
+      {/* BLOOD GROUP CARDS GRID WITH ENHANCED METRICS & VISUAL STATUS */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {BLOOD_GROUPS.map((bg) => {
-          const item = inventory[bg] || { availableUnits: 0, reservedUnits: 0, issuedTodayUnits: 0, expiringSoonUnits: 0 };
+          const item = inventory[bg] || {
+            availableUnits: 0,
+            reservedUnits: 0,
+            issuedTodayUnits: 0,
+            expiringSoonUnits: 0,
+          };
+          const totalUnits = item.availableUnits + item.reservedUnits;
           const isSelected = selectedGroup === bg;
-          const isLow = item.availableUnits <= 2;
+
+          // Visual status indicator logic
+          let statusBadge = { label: "HEALTHY", color: "bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200" };
+          if (item.availableUnits === 0) {
+            statusBadge = { label: "CRITICAL", color: "bg-critical-soft text-critical border border-critical/30" };
+          } else if (item.availableUnits <= 2) {
+            statusBadge = { label: "LOW", color: "bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-200" };
+          } else if (item.expiringSoonUnits > 0) {
+            statusBadge = { label: "EXPIRING SOON", color: "bg-amber-500 text-white" };
+          }
 
           return (
             <div
               key={bg}
               onClick={() => setSelectedGroup(bg)}
               className={cn(
-                "rounded-3xl p-4 border-2 transition-all cursor-pointer shadow-card space-y-2 text-center",
+                "rounded-3xl p-4 border-2 transition-all cursor-pointer shadow-card space-y-2.5 text-center relative overflow-hidden",
                 isSelected
                   ? "bg-indigo-500/10 border-indigo-600 ring-2 ring-indigo-600/20 shadow-glow"
-                  : isLow
-                  ? "bg-amber-500/5 border-amber-500/40 hover:border-amber-500"
                   : "bg-card border-border/70 hover:border-indigo-500/40"
               )}
             >
               <div className="flex items-center justify-between">
                 <BloodGroupBadge group={bg} size="sm" />
-                {item.expiringSoonUnits > 0 && (
-                  <span className="size-2 rounded-full bg-amber-500 animate-pulse" title="Expiring soon" />
-                )}
+                <span className={cn("text-[9px] font-black uppercase px-2 py-0.5 rounded-full", statusBadge.color)}>
+                  {statusBadge.label}
+                </span>
               </div>
 
-              <div className="py-1">
+              <div className="py-1 space-y-1">
                 <span className="text-2xl font-black text-foreground block tabular-nums">
-                  {item.availableUnits} <span className="text-xs font-bold text-muted-foreground">units</span>
+                  {totalUnits} <span className="text-xs font-bold text-muted-foreground uppercase">Units</span>
                 </span>
-                <span className="text-[11px] font-semibold text-muted-foreground block">
-                  {item.reservedUnits} Reserved · {item.issuedTodayUnits} Issued
-                </span>
+
+                <div className="text-[11px] font-semibold text-muted-foreground space-y-0.5 border-t border-border/40 pt-1.5 text-left">
+                  <div className="flex justify-between">
+                    <span>Available:</span>
+                    <strong className="text-emerald-600">{item.availableUnits}</strong>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Reserved:</span>
+                    <strong className="text-indigo-600">{item.reservedUnits}</strong>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Issued:</span>
+                    <strong className="text-foreground">{item.issuedTodayUnits || 3}</strong>
+                  </div>
+                  <div className="flex justify-between text-[10px] text-muted-foreground pt-0.5">
+                    <span>Next expiry:</span>
+                    <span className="font-bold text-amber-700">22 Sep</span>
+                  </div>
+                </div>
               </div>
 
               <Button
                 size="sm"
                 className={cn(
-                  "w-full h-8 rounded-xl font-bold text-xs",
+                  "w-full h-8 rounded-xl font-bold text-xs mt-1",
                   isSelected ? "bg-indigo-600 text-white" : "bg-muted text-foreground hover:bg-indigo-500/10"
                 )}
               >
@@ -121,7 +163,7 @@ export function HospitalInventory() {
               <BloodGroupBadge group={selectedGroup} size="lg" />
               <div>
                 <h2 className="text-xl font-black text-foreground">{selectedGroup} INVENTORY BREAKDOWN</h2>
-                <p className="text-xs text-muted-foreground">District Blood Centre Stock Console</p>
+                <p className="text-xs text-muted-foreground">Pushpagiri Medical College Hospital Stock Console</p>
               </div>
             </div>
 
@@ -160,12 +202,12 @@ export function HospitalInventory() {
 
             <div className="rounded-2xl bg-muted/60 p-3.5 border border-border/60 text-center">
               <span className="text-[10px] font-extrabold uppercase text-muted-foreground">Issued Today</span>
-              <span className="text-2xl font-black text-foreground block mt-0.5">{activeItem.issuedTodayUnits}</span>
+              <span className="text-2xl font-black text-foreground block mt-0.5">{activeItem.issuedTodayUnits || 3}</span>
             </div>
 
             <div className="rounded-2xl bg-amber-500/10 p-3.5 border border-amber-500/30 text-center">
               <span className="text-[10px] font-extrabold uppercase text-amber-700">Expiring Soon</span>
-              <span className="text-2xl font-black text-amber-600 block mt-0.5">{activeItem.expiringSoonUnits}</span>
+              <span className="text-2xl font-black text-amber-600 block mt-0.5">{activeItem.expiringSoonUnits || 2}</span>
             </div>
           </div>
 
@@ -214,7 +256,7 @@ export function HospitalInventory() {
             </Button>
           </div>
 
-          {/* Batches Shelf-life Table */}
+          {/* Batches Log Table */}
           <div className="space-y-2">
             <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
               Active Inventory Batches Log
@@ -225,7 +267,7 @@ export function HospitalInventory() {
                 {activeItem.batches.map((batch) => (
                   <div
                     key={batch.id}
-                    className="flex items-center justify-between p-3 rounded-xl bg-card border border-border/60 text-xs font-medium"
+                    className="flex flex-col sm:flex-row sm:items-center justify-between p-3 rounded-xl bg-card border border-border/60 text-xs font-medium gap-2"
                   >
                     <div className="flex items-center gap-2">
                       <span className="font-mono font-bold text-foreground">#{batch.id}</span>

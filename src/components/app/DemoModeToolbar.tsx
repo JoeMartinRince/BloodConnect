@@ -11,8 +11,10 @@ interface DemoModeToolbarProps {
 }
 
 export function DemoModeToolbar({ onRunScenario, className }: DemoModeToolbarProps) {
-  const { activeRole, setUserRole } = useAppStore();
+  const { activeRole, setUserRole, demoMode } = useAppStore();
   const [collapsed, setCollapsed] = useState(true);
+
+  if (!demoMode) return null;
 
   const handleSwitchRole = (role: UserRole) => {
     setUserRole(role);

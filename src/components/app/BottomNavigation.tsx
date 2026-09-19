@@ -68,7 +68,8 @@ export function BottomNavigation({ activeTab, onTabChange }: RoleNavigationProps
         <div className="grid grid-cols-5 items-end rounded-[28px] bg-card px-2 py-2 shadow-soft ring-1 ring-border/80 backdrop-blur-md">
           {items.map((item) => {
             const Icon = item.icon;
-            const isActive = activeTab === item.id;
+            const isActive =
+              activeTab === item.id || (item.id === "dashboard" && activeTab === "home");
 
             if (item.primary) {
               return (

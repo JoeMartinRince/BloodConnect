@@ -94,16 +94,16 @@ const INITIAL_INVENTORY: Record<BloodGroup, BloodInventoryItem> = {
   },
 };
 
-// Seed hospital requests
+// Seed hospital requests for Pushpagiri Medical College Hospital
 const INITIAL_HOSPITAL_REQUESTS: HospitalRequest[] = [
   {
-    id: "hr-1042",
+    id: "HR-1042",
     patientId: "PAT-8821",
     bloodGroup: "O+",
     unitsNeeded: 3,
     internalInventoryUsed: 1,
-    bloodBankUnitsReserved: 0,
-    donorUnitsRequested: 2,
+    bloodBankUnitsReserved: 1,
+    donorUnitsRequested: 1,
     urgency: "critical",
     requiredBy: "2026-09-19T23:00:00Z",
     location: "Pushpagiri Medical College, Thiruvalla",
@@ -112,14 +112,30 @@ const INITIAL_HOSPITAL_REQUESTS: HospitalRequest[] = [
     notifiedDonorsCount: 5,
     confirmedDonors: [
       {
-        donorId: "d102",
+        donorId: "D177",
         donorName: "Arun Kumar",
         bloodGroup: "O+",
-        distanceKm: 2.1,
+        distanceKm: 7.8,
         phone: "+91 98765 43210",
         status: "confirmed",
       },
     ],
+  },
+  {
+    id: "HR-1043",
+    patientId: "PAT-9412",
+    bloodGroup: "A-",
+    unitsNeeded: 2,
+    internalInventoryUsed: 0,
+    bloodBankUnitsReserved: 0,
+    donorUnitsRequested: 2,
+    urgency: "urgent",
+    requiredBy: "2026-09-20T04:00:00Z",
+    location: "Pushpagiri Medical College, Thiruvalla",
+    status: "SEARCHING",
+    createdAt: new Date(Date.now() - 3600000).toISOString(),
+    notifiedDonorsCount: 3,
+    confirmedDonors: [],
   },
 ];
 
@@ -205,8 +221,8 @@ export const DEFAULT_USER: UserProfile = {
   donations: 5,
   requests: 3,
   monthsActive: 6,
-  hospitalName: "District Blood Centre",
-  facilityId: "hosp-1",
+  hospitalName: "Pushpagiri Medical College Hospital",
+  facilityId: "HOSP-1024",
   donorAvailability: "available",
 };
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   FileText,
   Hospital,
@@ -12,6 +12,10 @@ import {
   Navigation,
   ArrowRight,
   ShieldCheck,
+  Play,
+  RotateCcw,
+  Sparkles,
+  Check,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -28,12 +32,11 @@ export function HospitalRequests() {
     inventory,
     hospitalRequests,
     createHospitalRequest,
-    reserveInternalStock,
     acceptDonorRequestForHospital,
   } = useAppStore();
 
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [patientId, setPatientId] = useState("PAT-1094");
+  const [patientId, setPatientId] = useState("PAT-8821");
   const [bloodGroup, setBloodGroup] = useState<BloodGroup>("O+");
   const [unitsNeeded, setUnitsNeeded] = useState<number>(3);
   const [urgency, setUrgency] = useState<Urgency>("critical");
@@ -42,6 +45,9 @@ export function HospitalRequests() {
   const [activeRequest, setActiveRequest] = useState<HospitalRequest | null>(
     hospitalRequests[0] || null
   );
+
+  // Simulation state for 3-Stage Supply Match Hero Demo
+  const [simulatingStage, setSimulatingStage] = useState<number>(3); // 1: Internal, 2: Bank, 3: Donor Complete
 
   const handleCreateSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,53 +60,144 @@ export function HospitalRequests() {
       location,
     });
     setActiveRequest(req);
+    setSimulatingStage(1);
     setDialogOpen(false);
-    toast.success(`Created Hospital Emergency Request #${req.id} for ${unitsNeeded} units of ${bloodGroup}`);
+    toast.success(`Created Request #${req.id} for ${unitsNeeded} units of ${bloodGroup}`);
   };
 
-  const handleSimulateDonorAccept = (reqId: string) => {
-    const targetDonor = donors.find((d) => d.bloodGroup === (activeRequest?.bloodGroup || "O+")) || donors[0];
-    acceptDonorRequestForHospital(reqId, targetDonor);
-    toast.success(`Simulated Acceptance: Donor ${targetDonor.name} accepted request #${reqId}!`);
+  const handleRunSimulation = () => {
+    setSimulatingStage(1);
+    toast.info("Step 1: Checking Hospital Internal Stock...");
+    setTimeout(() => {
+      setSimulatingStage(2);
+      toast.info("Step 2: Searching Nearby Blood Banks...");
+      setTimeout(() => {
+        setSimulatingStage(3);
+        if (activeRequest) {
+          const targetDonor = donors.find((d) => d.bloodGroup === activeRequest.bloodGroup) || donors[0];
+          acceptDonorRequestForHospital(activeRequest.id, targetDonor);
+        }
+        toast.success("Step 3: Compatible Donor Accepted! Request FULFILLED!");
+      }, 2500);
+    }, 2000);
   };
 
   return (
     <div className="space-y-6 animate-fade-up">
-      {/* Header Banner */}
-      <div className="rounded-3xl bg-card p-5 shadow-card border border-border/60">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="flex size-11 items-center justify-center rounded-2xl bg-indigo-600 text-white font-bold">
-              <FileText className="size-6" />
-            </div>
-            <div>
-              <span className="text-xs font-bold uppercase tracking-wider text-indigo-600">
-                Hospital Supply Chain
-              </span>
-              <h1 className="text-xl font-extrabold text-foreground">3-Step Blood Supply Requests</h1>
-              <p className="text-xs text-muted-foreground">
-                Matches internal stock ➔ nearby blood banks ➔ donor emergency network.
-              </p>
-            </div>
+      {/* 1. FIX REQUEST SCREEN HEADER */}
+      <div className="rounded-3xl bg-card p-5 sm:p-6 shadow-card border border-border/60 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold uppercase tracking-wider text-indigo-600 flex items-center gap-1.5">
+              <FileText className="size-4" />
+              Hospital Requests Engine
+            </span>
           </div>
+          <h1 className="text-2xl sm:text-3xl font-black text-foreground">Hospital Requests</h1>
+          <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
+            Track and manage blood supply requests across internal inventory, blood banks & donor network.
+          </p>
+        </div>
 
-          <Button
-            onClick={() => setDialogOpen(true)}
-            className="rounded-2xl font-bold bg-indigo-600 hover:bg-indigo-700 text-white shadow-md h-10 px-4"
-          >
-            <Plus className="size-4 mr-1" />
-            New Hospital Request
-          </Button>
+        <Button
+          onClick={() => setDialogOpen(true)}
+          className="rounded-2xl font-extrabold bg-indigo-600 hover:bg-indigo-700 text-white shadow-md h-11 px-5 text-xs sm:text-sm shrink-0"
+        >
+          <Plus className="size-4 mr-1.5" />
+          + New Request
+        </Button>
+      </div>
+
+      {/* 2. ACTIVE REQUESTS LIST */}
+      <div className="space-y-4">
+        <h2 className="text-sm font-extrabold uppercase tracking-wider text-muted-foreground px-1">
+          Active Hospital Supply Requests ({hospitalRequests.length})
+        </h2>
+
+        <div className="space-y-3">
+          {hospitalRequests.map((req) => {
+            const isSelected = activeRequest?.id === req.id;
+            const securedUnits = req.internalInventoryUsed + req.bloodBankUnitsReserved + req.confirmedDonors.length;
+            const isFulfilled = securedUnits >= req.unitsNeeded;
+
+            return (
+              <div
+                key={req.id}
+                onClick={() => setActiveRequest(req)}
+                className={cn(
+                  "rounded-3xl p-5 border-2 transition-all cursor-pointer shadow-card space-y-3",
+                  isSelected
+                    ? "bg-card border-indigo-600 ring-2 ring-indigo-600/20 shadow-glow"
+                    : "bg-card border-border/70 hover:border-indigo-500/50"
+                )}
+              >
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-border/50 pb-3">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-xs font-black text-indigo-600 bg-indigo-50 dark:bg-indigo-950 px-2.5 py-0.5 rounded-full border border-indigo-500/30">
+                      REQUEST #{req.id}
+                    </span>
+                    <UrgencyBadge urgency={req.urgency} />
+                    <span className="text-xs font-bold text-muted-foreground">
+                      Patient ID: <strong className="text-foreground">{req.patientId}</strong>
+                    </span>
+                  </div>
+
+                  <span
+                    className={cn(
+                      "text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full w-fit",
+                      isFulfilled
+                        ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200"
+                        : "bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-200"
+                    )}
+                  >
+                    {isFulfilled ? "✓ REQUEST FULFILLED" : `Status: ${req.status}`}
+                  </span>
+                </div>
+
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <BloodGroupBadge group={req.bloodGroup} size="sm" />
+                      <h3 className="text-base font-black text-foreground">
+                        {req.unitsNeeded} Units {req.bloodGroup} Required
+                      </h3>
+                    </div>
+
+                    <p className="text-xs text-muted-foreground flex items-center gap-2">
+                      <span>Hospital: <strong>{req.location}</strong></span>
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-500/30">
+                      {securedUnits} / {req.unitsNeeded} units secured
+                    </span>
+
+                    <Button
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveRequest(req);
+                      }}
+                      className="rounded-xl font-bold bg-indigo-600 text-white hover:bg-indigo-700 h-9 px-3.5 text-xs shrink-0"
+                    >
+                      View Details
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
 
-      {/* THREE-STAGE RESULT DISPLAY FOR ACTIVE REQUEST */}
+      {/* 3. HERO FEATURE: 3-STAGE SUPPLY MATCH ENGINE & TIMELINE */}
       {activeRequest && (
-        <div className="rounded-3xl bg-card p-6 shadow-glow border-2 border-indigo-500/40 space-y-5 animate-fade-up">
+        <div className="rounded-3xl bg-card p-6 shadow-glow border-2 border-indigo-500/40 space-y-6 animate-fade-up">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border/60 pb-4">
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-xs font-bold text-indigo-600 bg-indigo-50 dark:bg-indigo-950 px-2.5 py-0.5 rounded-full">
+                <span className="text-xs font-black text-indigo-600 bg-indigo-50 dark:bg-indigo-950 px-2.5 py-0.5 rounded-full">
                   REQUEST #{activeRequest.id}
                 </span>
                 <UrgencyBadge urgency={activeRequest.urgency} />
@@ -108,101 +205,172 @@ export function HospitalRequests() {
               <h2 className="text-xl font-black text-foreground mt-1">
                 {activeRequest.unitsNeeded} Units of {activeRequest.bloodGroup} Blood Needed
               </h2>
-              <p className="text-xs text-muted-foreground">Patient ID: {activeRequest.patientId} · {activeRequest.location}</p>
+              <p className="text-xs text-muted-foreground">
+                Patient ID: {activeRequest.patientId} · {activeRequest.location}
+              </p>
             </div>
 
-            <BloodGroupBadge group={activeRequest.bloodGroup} size="lg" />
+            <div className="flex items-center gap-2">
+              <Button
+                size="sm"
+                onClick={handleRunSimulation}
+                className="rounded-xl font-extrabold bg-primary text-primary-foreground hover:bg-primary/90 h-9 px-3 text-xs shadow-sm"
+              >
+                <Play className="size-3.5 mr-1" />
+                Run Animated Demo Match
+              </Button>
+            </div>
           </div>
 
-          {/* 3-STEP MATCHING WORKFLOW RESULTS */}
-          <div className="space-y-4">
+          {/* SUPPLY MATCH ENGINE HERO PANEL */}
+          <div className="space-y-4 bg-muted/40 p-5 rounded-3xl border border-border/70">
+            <div className="flex items-center justify-between">
+              <h3 className="text-sm font-black uppercase tracking-wider text-indigo-600 flex items-center gap-2">
+                <Sparkles className="size-4 animate-pulse" />
+                SUPPLY MATCH ENGINE
+              </h3>
+              <span className="text-xs font-bold text-foreground bg-card px-3 py-1 rounded-full border">
+                {activeRequest.internalInventoryUsed + activeRequest.bloodBankUnitsReserved + activeRequest.confirmedDonors.length} / {activeRequest.unitsNeeded} UNITS SECURED
+              </span>
+            </div>
+
+            {/* STAGE 1: HOSPITAL INVENTORY */}
+            <div
+              className={cn(
+                "rounded-2xl p-4 border-2 transition-all space-y-1.5",
+                simulatingStage >= 1
+                  ? "bg-emerald-500/10 border-emerald-500/50"
+                  : "bg-card border-border/60 opacity-60"
+              )}
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-extrabold text-foreground flex items-center gap-2">
+                  <CheckCircle2 className="size-4 text-emerald-600" />
+                  ✓ STEP 1 — HOSPITAL INVENTORY
+                </span>
+                <span className="text-[11px] font-bold bg-emerald-200 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-200 px-2.5 py-0.5 rounded-full">
+                  1 / {activeRequest.unitsNeeded} units found
+                </span>
+              </div>
+              <p className="text-xs text-muted-foreground pl-6">
+                Internal hospital stock scanned. <strong>1 unit reserved</strong> from Pushpagiri Medical Centre inventory.
+              </p>
+            </div>
+
+            {/* STAGE 2: NEARBY BLOOD BANKS */}
+            <div
+              className={cn(
+                "rounded-2xl p-4 border-2 transition-all space-y-1.5",
+                simulatingStage >= 2
+                  ? "bg-indigo-500/10 border-indigo-500/50"
+                  : "bg-card border-border/60 opacity-60"
+              )}
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-extrabold text-foreground flex items-center gap-2">
+                  <Building2 className="size-4 text-indigo-600" />
+                  {simulatingStage >= 2 ? "✓ STEP 2 — NEARBY BLOOD BANKS" : "○ STEP 2 — NEARBY BLOOD BANKS"}
+                </span>
+                <span className="text-[11px] font-bold bg-indigo-200 dark:bg-indigo-950 text-indigo-800 dark:text-indigo-200 px-2.5 py-0.5 rounded-full">
+                  {simulatingStage >= 2 ? "1 unit found · 4.2 km away" : "Searching nearby blood banks..."}
+                </span>
+              </div>
+              <p className="text-xs text-muted-foreground pl-6">
+                District Blood Centre located 4.2 km away. <strong>1 unit reserved</strong> inter-bank transfer.
+              </p>
+            </div>
+
+            {/* STAGE 3: DONOR NETWORK */}
+            <div
+              className={cn(
+                "rounded-2xl p-4 border-2 transition-all space-y-1.5",
+                simulatingStage >= 3
+                  ? "bg-emerald-500/10 border-emerald-500/50"
+                  : "bg-card border-border/60 opacity-60"
+              )}
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-extrabold text-foreground flex items-center gap-2">
+                  <Users className="size-4 text-emerald-600" />
+                  {simulatingStage >= 3 ? "✓ STEP 3 — DONOR NETWORK" : "○ STEP 3 — DONOR NETWORK"}
+                </span>
+                <span className="text-[11px] font-bold bg-emerald-200 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-200 px-2.5 py-0.5 rounded-full">
+                  {simulatingStage >= 3 ? "1 donor accepted · 7.8 km away" : "Searching compatible donors..."}
+                </span>
+              </div>
+              <p className="text-xs text-muted-foreground pl-6">
+                Dispatched emergency alert to 5 nearby verified O+ donors. <strong>Donor D177 accepted</strong>.
+              </p>
+            </div>
+
+            {/* FULFILLMENT BANNER */}
+            {simulatingStage >= 3 && (
+              <div className="rounded-2xl bg-gradient-to-r from-emerald-600 to-emerald-700 p-4 text-white shadow-glow space-y-2 text-center animate-fade-up">
+                <div className="flex items-center justify-center gap-2">
+                  <CheckCircle2 className="size-6 text-white animate-pop" />
+                  <h4 className="text-lg font-black tracking-tight">✓ BLOOD REQUEST FULFILLED</h4>
+                </div>
+                <p className="text-xs font-bold text-white/90">
+                  3 / 3 Units Secured: 1 Hospital Inventory · 1 Blood Bank · 1 Donor Network
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* VERTICAL REQUEST TIMELINE */}
+          <div className="space-y-3 pt-2">
             <h3 className="text-xs font-black uppercase tracking-wider text-muted-foreground">
-              3-Stage Multi-Source Supply Match Engine
+              Request Status Vertical Timeline
             </h3>
 
-            {/* STEP 1: INTERNAL INVENTORY */}
-            <div className="rounded-2xl bg-indigo-500/10 p-4 border border-indigo-500/30 space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-extrabold text-indigo-700 dark:text-indigo-400 flex items-center gap-1.5">
-                  <Hospital className="size-4" />
-                  STEP 1: 🏥 Internal Hospital Inventory
+            <div className="relative pl-6 space-y-4 border-l-2 border-indigo-500/30 ml-2 text-xs">
+              <div className="relative">
+                <span className="absolute -left-[31px] top-0 flex size-5 items-center justify-center rounded-full bg-indigo-600 text-white text-[10px] font-bold">
+                  ✓
                 </span>
-                <span className="text-[10px] font-bold bg-indigo-200 dark:bg-indigo-950 text-indigo-800 dark:text-indigo-200 px-2 py-0.5 rounded-full">
-                  {inventory[activeRequest.bloodGroup]?.availableUnits || 0} Units Available
-                </span>
-              </div>
-              <p className="text-xs text-foreground font-medium">
-                {activeRequest.internalInventoryUsed > 0
-                  ? `✓ Reserved ${activeRequest.internalInventoryUsed} unit(s) from internal hospital stock.`
-                  : "Checking internal hospital stock..."}
-              </p>
-            </div>
-
-            {/* STEP 2: NEARBY BLOOD BANKS */}
-            <div className="rounded-2xl bg-primary-soft p-4 border border-primary/30 space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-extrabold text-primary flex items-center gap-1.5">
-                  <Building2 className="size-4" />
-                  STEP 2: 🏥 Nearby Blood Banks
-                </span>
-                <span className="text-[10px] font-bold bg-card text-foreground px-2 py-0.5 rounded-full border">
-                  3 Blood Banks Located
-                </span>
-              </div>
-              <p className="text-xs text-foreground font-medium">
-                District Blood Centre & Pushpagiri Blood Bank have {activeRequest.bloodGroup} stock available.
-              </p>
-            </div>
-
-            {/* STEP 3: DONOR NETWORK */}
-            <div className="rounded-2xl bg-emerald-500/10 p-4 border border-emerald-500/30 space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-extrabold text-emerald-700 dark:text-emerald-400 flex items-center gap-1.5">
-                  <Users className="size-4" />
-                  STEP 3: ❤️ Donor Emergency Network
-                </span>
-                <span className="text-[10px] font-bold bg-emerald-200 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-200 px-2 py-0.5 rounded-full">
-                  5 Donors Notified
-                </span>
+                <p className="font-extrabold text-foreground">Request Created</p>
+                <p className="text-muted-foreground text-[11px]">Patient ID: {activeRequest.patientId} · Pushpagiri Medical College</p>
               </div>
 
-              {activeRequest.confirmedDonors.length > 0 ? (
-                <div className="space-y-2">
-                  <span className="text-xs font-extrabold text-emerald-600 block">
-                    ❤️ DONOR CONFIRMED ({activeRequest.confirmedDonors.length})
-                  </span>
-                  {activeRequest.confirmedDonors.map((cd) => (
-                    <div key={cd.donorId} className="flex items-center justify-between p-3 rounded-xl bg-card border border-border/60 text-xs">
-                      <div>
-                        <p className="font-bold text-foreground">{cd.donorName} (Donor #{cd.donorId})</p>
-                        <p className="text-muted-foreground">{cd.distanceKm} km away · Status: {cd.status}</p>
-                      </div>
+              <div className="relative">
+                <span className="absolute -left-[31px] top-0 flex size-5 items-center justify-center rounded-full bg-indigo-600 text-white text-[10px] font-bold">
+                  ✓
+                </span>
+                <p className="font-extrabold text-foreground">Hospital Inventory Checked</p>
+                <p className="text-muted-foreground text-[11px]">1 Unit O+ Stock Found in internal hospital reserve</p>
+              </div>
 
-                      <div className="flex items-center gap-2">
-                        <a
-                          href="tel:+919876543210"
-                          className="px-2.5 py-1 rounded-lg bg-emerald-600 text-white font-bold text-[11px] flex items-center gap-1"
-                        >
-                          <PhoneCall className="size-3" /> Call
-                        </a>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="flex items-center justify-between">
-                  <p className="text-xs text-muted-foreground">
-                    Awaiting donor responses. Dispatched emergency alert to top 5 nearby O+ donors.
-                  </p>
-                  <Button
-                    size="sm"
-                    onClick={() => handleSimulateDonorAccept(activeRequest.id)}
-                    className="h-8 text-[11px] font-bold bg-emerald-600 text-white hover:bg-emerald-700"
-                  >
-                    + Simulate Donor Acceptance
-                  </Button>
-                </div>
-              )}
+              <div className="relative">
+                <span className="absolute -left-[31px] top-0 flex size-5 items-center justify-center rounded-full bg-indigo-600 text-white text-[10px] font-bold">
+                  ✓
+                </span>
+                <p className="font-extrabold text-foreground">1 Unit Reserved</p>
+                <p className="text-muted-foreground text-[11px]">Internal reserve locked for Patient PAT-8821</p>
+              </div>
+
+              <div className="relative">
+                <span className="absolute -left-[31px] top-0 flex size-5 items-center justify-center rounded-full bg-indigo-600 text-white text-[10px] font-bold">
+                  ✓
+                </span>
+                <p className="font-extrabold text-foreground">Blood Bank Search Started</p>
+                <p className="text-muted-foreground text-[11px]">District Blood Centre matched (1 unit available)</p>
+              </div>
+
+              <div className="relative">
+                <span className="absolute -left-[31px] top-0 flex size-5 items-center justify-center rounded-full bg-indigo-600 text-white text-[10px] font-bold">
+                  ✓
+                </span>
+                <p className="font-extrabold text-foreground">Donors Notified</p>
+                <p className="text-muted-foreground text-[11px]">5 nearby O+ registered donors dispatched emergency push alert</p>
+              </div>
+
+              <div className="relative">
+                <span className="absolute -left-[31px] top-0 flex size-5 items-center justify-center rounded-full bg-emerald-600 text-white text-[10px] font-bold">
+                  ●
+                </span>
+                <p className="font-extrabold text-emerald-600">Donor D177 Accepted Request</p>
+                <p className="text-muted-foreground text-[11px]">Arun Kumar (7.8 km away) accepted and is en-route</p>
+              </div>
             </div>
           </div>
         </div>
