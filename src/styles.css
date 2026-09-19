@@ -1,0 +1,225 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --radius-sm: calc(var(--radius) - 8px);
+  --radius-md: calc(var(--radius) - 4px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-soft: var(--primary-soft);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-warning-soft: var(--warning-soft);
+  --color-critical: var(--critical);
+  --color-critical-soft: var(--critical-soft);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-map-land: var(--map-land);
+  --color-map-road: var(--map-road);
+  --color-map-water: var(--map-water);
+  --color-map-park: var(--map-park);
+  --shadow-soft: 0 6px 24px -8px oklch(0.58 0.24 15 / 0.14), 0 1px 3px oklch(0 0 0 / 0.04);
+  --shadow-card: 0 2px 12px -2px oklch(0.4 0.1 15 / 0.08);
+  --shadow-glow: 0 10px 30px -8px oklch(0.58 0.24 15 / 0.45);
+  --animate-heartbeat: heartbeat 1.6s ease-in-out infinite;
+  --animate-pulse-ring: pulse-ring 1.8s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
+  --animate-fade-up: fade-up 0.4s ease-out both;
+  --animate-radar: radar 2.2s linear infinite;
+  --animate-pop: pop 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  --animate-shimmer: shimmer 1.6s linear infinite;
+  --animate-float: float 4s ease-in-out infinite;
+}
+
+:root {
+  --radius: 1.25rem;
+  --background: oklch(0.977 0.012 356);
+  --foreground: oklch(0.205 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.205 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.205 0 0);
+  --primary: oklch(0.585 0.245 15);
+  --primary-foreground: oklch(1 0 0);
+  --primary-soft: oklch(0.95 0.03 356);
+  --secondary: oklch(0.69 0.21 10);
+  --secondary-foreground: oklch(1 0 0);
+  --muted: oklch(0.955 0.012 356);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.94 0.035 356);
+  --accent-foreground: oklch(0.45 0.2 15);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(1 0 0);
+  --success: oklch(0.66 0.17 150);
+  --success-foreground: oklch(1 0 0);
+  --success-soft: oklch(0.95 0.05 150);
+  --warning: oklch(0.78 0.16 75);
+  --warning-foreground: oklch(0.25 0.05 75);
+  --warning-soft: oklch(0.96 0.06 85);
+  --critical: oklch(0.6 0.24 25);
+  --critical-soft: oklch(0.95 0.035 20);
+  --border: oklch(0.93 0.012 356);
+  --input: oklch(0.92 0.012 356);
+  --ring: oklch(0.585 0.245 15);
+  --chart-1: oklch(0.585 0.245 15);
+  --chart-2: oklch(0.69 0.21 10);
+  --chart-3: oklch(0.82 0.1 5);
+  --chart-4: oklch(0.66 0.17 150);
+  --chart-5: oklch(0.78 0.16 75);
+  --map-land: oklch(0.975 0.008 80);
+  --map-road: oklch(1 0 0);
+  --map-water: oklch(0.93 0.03 230);
+  --map-park: oklch(0.94 0.05 140);
+}
+
+@layer base {
+  *, ::before, ::after {
+    box-sizing: border-color;
+    box-sizing: border-box;
+  }
+  html {
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    width: 100%;
+    max-width: 100vw;
+    min-height: 100dvh;
+    overflow-x: hidden;
+  }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    width: 100%;
+    max-width: 100vw;
+    min-height: 100dvh;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+@utility gradient-brand {
+  background-image: linear-gradient(135deg, var(--primary), var(--secondary));
+}
+@utility gradient-critical {
+  background-image: linear-gradient(135deg, oklch(0.55 0.24 20), oklch(0.66 0.23 12));
+}
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+@utility safe-bottom {
+  padding-bottom: calc(80px + env(safe-area-inset-bottom));
+}
+@utility skeleton {
+  background: linear-gradient(90deg, var(--muted) 25%, oklch(0.97 0.01 356) 50%, var(--muted) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s linear infinite;
+}
+
+@keyframes heartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  14% {
+    transform: scale(1.12);
+  }
+  28% {
+    transform: scale(1);
+  }
+  42% {
+    transform: scale(1.1);
+  }
+  70% {
+    transform: scale(1);
+  }
+}
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes radar {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
