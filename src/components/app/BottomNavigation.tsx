@@ -82,26 +82,12 @@ export function BottomNavigation({ activeTab, onTabChange }: RoleNavigationProps
                 >
                   <span
                     className={cn(
-                      "-mt-7 flex size-14 items-center justify-center rounded-full font-extrabold text-white shadow-glow ring-4 ring-background transition-transform active:scale-95",
-                      activeRole === "hospital"
-                        ? "bg-indigo-600"
-                        : activeRole === "donor"
-                        ? "bg-emerald-600"
-                        : "gradient-brand text-primary-foreground"
+                      "-mt-7 flex size-14 items-center justify-center rounded-full font-extrabold text-white shadow-glow ring-4 ring-background transition-transform active:scale-95 bg-primary text-primary-foreground"
                     )}
                   >
                     <Icon className="size-6" strokeWidth={2.5} />
                   </span>
-                  <span
-                    className={cn(
-                      "mt-1 text-[10px] font-bold",
-                      activeRole === "hospital"
-                        ? "text-indigo-600"
-                        : activeRole === "donor"
-                        ? "text-emerald-600"
-                        : "text-primary"
-                    )}
-                  >
+                  <span className="mt-1 text-[10px] font-bold text-primary">
                     {item.label}
                   </span>
                 </button>
@@ -114,20 +100,16 @@ export function BottomNavigation({ activeTab, onTabChange }: RoleNavigationProps
                 type="button"
                 onClick={() => onTabChange(item.id)}
                 className={cn(
-                  "group relative flex flex-col items-center gap-0.5 py-1 transition-colors cursor-pointer",
+                  "group relative flex flex-col items-center gap-0.5 py-1 px-2 rounded-xl transition-all cursor-pointer",
                   isActive
-                    ? activeRole === "hospital"
-                      ? "text-indigo-600"
-                      : activeRole === "donor"
-                      ? "text-emerald-600"
-                      : "text-primary"
+                    ? "text-primary bg-primary-soft/60 font-black"
                     : "text-muted-foreground hover:text-foreground"
                 )}
               >
                 <Icon className="size-5 transition-transform group-active:scale-90" />
                 <span className="text-[10px] font-bold">{item.label}</span>
                 {item.id === "alerts" && unreadCount > 0 && (
-                  <span className="absolute right-1/2 top-0 translate-x-3 rounded-full bg-primary px-1 text-[9px] font-bold text-primary-foreground">
+                  <span className="absolute right-1 top-0.5 rounded-full bg-primary px-1 text-[9px] font-bold text-primary-foreground">
                     {unreadCount}
                   </span>
                 )}

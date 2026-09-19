@@ -113,12 +113,12 @@ export function RoleSelectionModal({ open, onOpenChange, onRoleSelected }: RoleS
             className={cn(
               "group relative overflow-hidden rounded-3xl p-5 border-2 transition-all cursor-pointer shadow-card hover:shadow-glow",
               activeRole === "hospital"
-                ? "bg-gradient-to-r from-indigo-500/10 via-card to-indigo-500/20 border-indigo-600 ring-2 ring-indigo-600/20"
-                : "bg-card border-border/80 hover:border-indigo-500/50"
+                ? "bg-gradient-to-r from-primary/10 via-card to-primary/20 border-primary ring-2 ring-primary/20"
+                : "bg-card border-border/80 hover:border-primary/50"
             )}
           >
             <div className="flex items-start gap-4">
-              <div className="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-indigo-600 text-white shadow-md group-hover:scale-105 transition-transform">
+              <div className="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-primary text-white shadow-md group-hover:scale-105 transition-transform">
                 <Hospital className="size-7" />
               </div>
 
@@ -126,7 +126,7 @@ export function RoleSelectionModal({ open, onOpenChange, onRoleSelected }: RoleS
                 <div className="flex items-center justify-between">
                   <h3 className="text-lg font-black text-foreground">🏥 Hospital / Blood Bank</h3>
                   {activeRole === "hospital" && (
-                    <span className="rounded-full bg-indigo-600 text-white px-2.5 py-0.5 text-[10px] font-extrabold uppercase">
+                    <span className="rounded-full bg-primary text-white px-2.5 py-0.5 text-[10px] font-extrabold uppercase">
                       Active
                     </span>
                   )}
@@ -134,7 +134,7 @@ export function RoleSelectionModal({ open, onOpenChange, onRoleSelected }: RoleS
                 <p className="mt-1 text-xs text-muted-foreground font-medium leading-relaxed">
                   &quot;Manage blood inventory and coordinate emergency requests.&quot;
                 </p>
-                <div className="mt-2.5 flex items-center gap-2 text-xs font-bold text-indigo-600">
+                <div className="mt-2.5 flex items-center gap-2 text-xs font-bold text-primary">
                   <span>3-Stage Supply Matching & Analytics Dashboard</span>
                   <ArrowRight className="size-3.5 group-hover:translate-x-1 transition-transform" />
                 </div>

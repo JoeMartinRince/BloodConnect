@@ -51,9 +51,9 @@
   --color-map-road: var(--map-road);
   --color-map-water: var(--map-water);
   --color-map-park: var(--map-park);
-  --shadow-soft: 0 6px 24px -8px oklch(0.58 0.24 15 / 0.14), 0 1px 3px oklch(0 0 0 / 0.04);
-  --shadow-card: 0 2px 12px -2px oklch(0.4 0.1 15 / 0.08);
-  --shadow-glow: 0 10px 30px -8px oklch(0.58 0.24 15 / 0.45);
+  --shadow-soft: 0 4px 20px rgba(120, 20, 20, 0.06);
+  --shadow-card: 0 4px 20px rgba(120, 20, 20, 0.06);
+  --shadow-glow: 0 8px 25px -4px rgba(200, 29, 37, 0.3);
   --animate-heartbeat: heartbeat 1.6s ease-in-out infinite;
   --animate-pulse-ring: pulse-ring 1.8s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
   --animate-fade-up: fade-up 0.4s ease-out both;
@@ -65,48 +65,47 @@
 
 :root {
   --radius: 1.25rem;
-  --background: oklch(0.977 0.012 356);
-  --foreground: oklch(0.205 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.205 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.205 0 0);
-  --primary: oklch(0.585 0.245 15);
-  --primary-foreground: oklch(1 0 0);
-  --primary-soft: oklch(0.95 0.03 356);
-  --secondary: oklch(0.69 0.21 10);
-  --secondary-foreground: oklch(1 0 0);
-  --muted: oklch(0.955 0.012 356);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.94 0.035 356);
-  --accent-foreground: oklch(0.45 0.2 15);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(1 0 0);
-  --success: oklch(0.66 0.17 150);
-  --success-foreground: oklch(1 0 0);
-  --success-soft: oklch(0.95 0.05 150);
-  --warning: oklch(0.78 0.16 75);
-  --warning-foreground: oklch(0.25 0.05 75);
-  --warning-soft: oklch(0.96 0.06 85);
-  --critical: oklch(0.6 0.24 25);
-  --critical-soft: oklch(0.95 0.035 20);
-  --border: oklch(0.93 0.012 356);
-  --input: oklch(0.92 0.012 356);
-  --ring: oklch(0.585 0.245 15);
-  --chart-1: oklch(0.585 0.245 15);
-  --chart-2: oklch(0.69 0.21 10);
-  --chart-3: oklch(0.82 0.1 5);
-  --chart-4: oklch(0.66 0.17 150);
-  --chart-5: oklch(0.78 0.16 75);
-  --map-land: oklch(0.975 0.008 80);
-  --map-road: oklch(1 0 0);
-  --map-water: oklch(0.93 0.03 230);
-  --map-park: oklch(0.94 0.05 140);
+  --background: #FAF7F7;
+  --foreground: #181818;
+  --card: #FFFFFF;
+  --card-foreground: #181818;
+  --popover: #FFFFFF;
+  --popover-foreground: #181818;
+  --primary: #C81D25;
+  --primary-foreground: #FFFFFF;
+  --primary-soft: #FDE8EA;
+  --secondary: #A9141C;
+  --secondary-foreground: #FFFFFF;
+  --muted: #FFF5F5;
+  --muted-foreground: #6B6B6B;
+  --accent: #FDE8EA;
+  --accent-foreground: #7F1016;
+  --destructive: #C81D25;
+  --destructive-foreground: #FFFFFF;
+  --success: #159447;
+  --success-foreground: #FFFFFF;
+  --success-soft: #EBF7EE;
+  --warning: #F59E0B;
+  --warning-foreground: #181818;
+  --warning-soft: #FEF3C7;
+  --critical: #C81D25;
+  --critical-soft: #FFF5F5;
+  --border: #F0EAEA;
+  --input: #EEEEEE;
+  --ring: #C81D25;
+  --chart-1: #C81D25;
+  --chart-2: #A9141C;
+  --chart-3: #7F1016;
+  --chart-4: #159447;
+  --chart-5: #F59E0B;
+  --map-land: #FAF7F7;
+  --map-road: #FFFFFF;
+  --map-water: #E2E8F0;
+  --map-park: #DCFCE7;
 }
 
 @layer base {
   *, ::before, ::after {
-    box-sizing: border-color;
     box-sizing: border-box;
   }
   html {
@@ -130,10 +129,10 @@
 }
 
 @utility gradient-brand {
-  background-image: linear-gradient(135deg, var(--primary), var(--secondary));
+  background-image: linear-gradient(135deg, #C81D25, #A9141C);
 }
 @utility gradient-critical {
-  background-image: linear-gradient(135deg, oklch(0.55 0.24 20), oklch(0.66 0.23 12));
+  background-image: linear-gradient(135deg, #C81D25, #7F1016);
 }
 @utility scrollbar-none {
   scrollbar-width: none;
@@ -145,81 +144,39 @@
   padding-bottom: calc(80px + env(safe-area-inset-bottom));
 }
 @utility skeleton {
-  background: linear-gradient(90deg, var(--muted) 25%, oklch(0.97 0.01 356) 50%, var(--muted) 75%);
+  background: linear-gradient(90deg, var(--muted) 25%, #FAF7F7 50%, var(--muted) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.6s linear infinite;
 }
 
 @keyframes heartbeat {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  14% {
-    transform: scale(1.12);
-  }
-  28% {
-    transform: scale(1);
-  }
-  42% {
-    transform: scale(1.1);
-  }
-  70% {
-    transform: scale(1);
-  }
+  0%, 100% { transform: scale(1); }
+  14% { transform: scale(1.12); }
+  28% { transform: scale(1); }
+  42% { transform: scale(1.1); }
+  70% { transform: scale(1); }
 }
 @keyframes pulse-ring {
-  0% {
-    transform: scale(0.6);
-    opacity: 0.8;
-  }
-  100% {
-    transform: scale(2.4);
-    opacity: 0;
-  }
+  0% { transform: scale(0.6); opacity: 0.8; }
+  100% { transform: scale(2.4); opacity: 0; }
 }
 @keyframes fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 @keyframes radar {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 @keyframes pop {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
 }
 @keyframes shimmer {
-  from {
-    background-position: 200% 0;
-  }
-  to {
-    background-position: -200% 0;
-  }
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
 }
 @keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-6px);
-  }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
 }

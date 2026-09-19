@@ -68,16 +68,7 @@ export function SideNavigation({ activeTab, onTabChange, onOpenRoleModal }: Side
         <div>
           <span className="text-[10px] uppercase font-bold text-muted-foreground block">Active Role</span>
           <span className="text-xs font-black text-foreground capitalize flex items-center gap-1.5">
-            <span
-              className={cn(
-                "size-2 rounded-full",
-                activeRole === "hospital"
-                  ? "bg-indigo-600"
-                  : activeRole === "donor"
-                  ? "bg-emerald-600"
-                  : "bg-critical"
-              )}
-            />
+            <span className="size-2 rounded-full bg-primary" />
             {activeRole === "seeker"
               ? "Blood Seeker"
               : activeRole === "donor"
@@ -97,14 +88,7 @@ export function SideNavigation({ activeTab, onTabChange, onOpenRoleModal }: Side
 
       <Button
         onClick={() => onTabChange("request")}
-        className={cn(
-          "mt-4 font-extrabold h-11 rounded-2xl shadow-glow text-white",
-          activeRole === "hospital"
-            ? "bg-indigo-600 hover:bg-indigo-700"
-            : activeRole === "donor"
-            ? "bg-emerald-600 hover:bg-emerald-700"
-            : "gradient-brand"
-        )}
+        className="mt-4 font-extrabold h-11 rounded-2xl shadow-glow text-white bg-primary hover:bg-secondary"
       >
         <Plus className="size-4 mr-1.5" />
         {activeRole === "hospital"
@@ -126,11 +110,7 @@ export function SideNavigation({ activeTab, onTabChange, onOpenRoleModal }: Side
               className={cn(
                 "flex items-center gap-3 rounded-2xl px-3.5 py-2.5 text-sm font-semibold transition-all text-left cursor-pointer",
                 isActive
-                  ? activeRole === "hospital"
-                    ? "bg-indigo-500/10 text-indigo-600 font-bold"
-                    : activeRole === "donor"
-                    ? "bg-emerald-500/10 text-emerald-600 font-bold"
-                    : "bg-primary-soft text-primary font-bold"
+                  ? "bg-primary-soft text-primary font-bold shadow-sm border border-primary/20"
                   : "text-muted-foreground hover:bg-muted hover:text-foreground"
               )}
             >

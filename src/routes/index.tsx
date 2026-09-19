@@ -97,7 +97,7 @@ function Index() {
                     <span
                       className={`size-2 rounded-full ${
                         activeRole === "hospital"
-                          ? "bg-indigo-600"
+                          ? "bg-primary"
                           : activeRole === "donor"
                           ? "bg-emerald-600"
                           : "bg-critical"
@@ -340,7 +340,7 @@ function AlertsTab({
           >
             <div className="flex items-center justify-between">
               <h3 className="font-extrabold text-foreground text-sm flex items-center gap-2">
-                <Bell className="size-4 text-indigo-600" />
+                <Bell className="size-4 text-primary" />
                 {n.title}
               </h3>
               <span className="text-[11px] text-muted-foreground">{n.time}</span>
@@ -362,21 +362,21 @@ function ProfileTab({ role }: { role: UserRole }) {
       <div className="space-y-4 animate-fade-up">
         {/* Hospital Administrator Profile Card */}
         <div className="rounded-3xl bg-card p-6 shadow-card border border-border/60 text-center space-y-3">
-          <div className="mx-auto flex size-20 items-center justify-center rounded-full bg-indigo-500/10 text-indigo-600 font-black text-2xl border-2 border-indigo-500/30">
+          <div className="mx-auto flex size-20 items-center justify-center rounded-full bg-primary-soft text-primary font-black text-2xl border-2 border-primary/30">
             AM
           </div>
           <div>
             <h1 className="text-2xl font-black text-foreground">Alex Mathew</h1>
-            <p className="text-xs font-extrabold text-indigo-600">Hospital Administrator</p>
+            <p className="text-xs font-extrabold text-primary">Hospital Administrator</p>
             <p className="text-xs text-muted-foreground mt-0.5">Pushpagiri Medical College Hospital</p>
           </div>
 
           <div className="flex items-center justify-center gap-2 flex-wrap text-xs">
-            <span className="rounded-full bg-indigo-500/15 px-3 py-1 font-bold text-indigo-700 border border-indigo-500/30">
+            <span className="rounded-full bg-primary-soft px-3 py-1 font-bold text-primary border border-primary/30">
               Hospital ID: HOSP-1024
             </span>
-            <span className="rounded-full bg-emerald-500/15 px-3 py-1 font-bold text-emerald-700 border border-emerald-500/30">
-              🟢 Demo Verified Hospital
+            <span className="rounded-full bg-primary-soft px-3 py-1 font-bold text-primary border border-primary/30">
+              ✓ Verified Hospital
             </span>
           </div>
 
@@ -404,7 +404,7 @@ function ProfileTab({ role }: { role: UserRole }) {
                 <button
                   type="button"
                   onClick={() => setUserRole("hospital")}
-                  className={`p-2 rounded-xl font-bold border ${role === "hospital" ? "bg-indigo-600 text-white" : "bg-card"}`}
+                  className={`p-2 rounded-xl font-bold border ${role === "hospital" ? "bg-primary text-white" : "bg-card"}`}
                 >
                   Hospital
                 </button>
@@ -457,7 +457,7 @@ function ProfileTab({ role }: { role: UserRole }) {
           <p className="text-xs text-muted-foreground">{user?.email || "alex@example.com"}</p>
         </div>
 
-        <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-bold text-primary border border-primary/20 capitalize">
+        <div className="inline-flex items-center gap-2 rounded-full bg-primary-soft px-4 py-1.5 text-xs font-bold text-primary border border-primary/20 capitalize">
           Active Role: {role === "seeker" ? "Blood Seeker" : "Blood Donor"}
         </div>
 
@@ -482,7 +482,7 @@ function ProfileTab({ role }: { role: UserRole }) {
               <button
                 type="button"
                 onClick={() => setUserRole("hospital")}
-                className={`p-2 rounded-xl font-bold border ${role === "hospital" ? "bg-indigo-600 text-white" : "bg-card"}`}
+                className={`p-2 rounded-xl font-bold border ${role === "hospital" ? "bg-primary text-white" : "bg-card"}`}
               >
                 Hospital
               </button>

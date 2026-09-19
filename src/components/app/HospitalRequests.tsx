@@ -88,7 +88,7 @@ export function HospitalRequests() {
       <div className="rounded-3xl bg-card p-5 sm:p-6 shadow-card border border-border/60 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-indigo-600 flex items-center gap-1.5">
+            <span className="text-xs font-bold uppercase tracking-wider text-primary flex items-center gap-1.5">
               <FileText className="size-4" />
               Hospital Requests Engine
             </span>
@@ -101,7 +101,7 @@ export function HospitalRequests() {
 
         <Button
           onClick={() => setDialogOpen(true)}
-          className="rounded-2xl font-extrabold bg-indigo-600 hover:bg-indigo-700 text-white shadow-md h-11 px-5 text-xs sm:text-sm shrink-0"
+          className="rounded-2xl font-extrabold bg-primary hover:bg-primary-dark text-white shadow-md h-11 px-5 text-xs sm:text-sm shrink-0"
         >
           <Plus className="size-4 mr-1.5" />
           + New Request
@@ -127,13 +127,13 @@ export function HospitalRequests() {
                 className={cn(
                   "rounded-3xl p-5 border-2 transition-all cursor-pointer shadow-card space-y-3",
                   isSelected
-                    ? "bg-card border-indigo-600 ring-2 ring-indigo-600/20 shadow-glow"
-                    : "bg-card border-border/70 hover:border-indigo-500/50"
+                    ? "bg-card border-primary ring-2 ring-primary/20 shadow-glow"
+                    : "bg-card border-border/70 hover:border-primary/50"
                 )}
               >
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-border/50 pb-3">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-xs font-black text-indigo-600 bg-indigo-50 dark:bg-indigo-950 px-2.5 py-0.5 rounded-full border border-indigo-500/30">
+                    <span className="text-xs font-black text-primary bg-primary-soft px-2.5 py-0.5 rounded-full border border-primary/30">
                       REQUEST #{req.id}
                     </span>
                     <UrgencyBadge urgency={req.urgency} />
@@ -179,7 +179,7 @@ export function HospitalRequests() {
                         e.stopPropagation();
                         setActiveRequest(req);
                       }}
-                      className="rounded-xl font-bold bg-indigo-600 text-white hover:bg-indigo-700 h-9 px-3.5 text-xs shrink-0"
+                      className="rounded-xl font-bold bg-primary hover:bg-primary-dark text-white h-9 px-3.5 text-xs shrink-0"
                     >
                       View Details
                     </Button>
@@ -193,11 +193,11 @@ export function HospitalRequests() {
 
       {/* 3. HERO FEATURE: 3-STAGE SUPPLY MATCH ENGINE & TIMELINE */}
       {activeRequest && (
-        <div className="rounded-3xl bg-card p-6 shadow-glow border-2 border-indigo-500/40 space-y-6 animate-fade-up">
+        <div className="rounded-3xl bg-card p-6 shadow-glow border-2 border-primary/40 space-y-6 animate-fade-up">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border/60 pb-4">
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-xs font-black text-indigo-600 bg-indigo-50 dark:bg-indigo-950 px-2.5 py-0.5 rounded-full">
+                <span className="text-xs font-black text-primary bg-primary-soft px-2.5 py-0.5 rounded-full">
                   REQUEST #{activeRequest.id}
                 </span>
                 <UrgencyBadge urgency={activeRequest.urgency} />
@@ -214,7 +214,7 @@ export function HospitalRequests() {
               <Button
                 size="sm"
                 onClick={handleRunSimulation}
-                className="rounded-xl font-extrabold bg-primary text-primary-foreground hover:bg-primary/90 h-9 px-3 text-xs shadow-sm"
+                className="rounded-xl font-extrabold bg-primary text-white hover:bg-primary-dark h-9 px-3 text-xs shadow-sm"
               >
                 <Play className="size-3.5 mr-1" />
                 Run Animated Demo Match
@@ -225,7 +225,7 @@ export function HospitalRequests() {
           {/* SUPPLY MATCH ENGINE HERO PANEL */}
           <div className="space-y-4 bg-muted/40 p-5 rounded-3xl border border-border/70">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-black uppercase tracking-wider text-indigo-600 flex items-center gap-2">
+              <h3 className="text-sm font-black uppercase tracking-wider text-primary flex items-center gap-2">
                 <Sparkles className="size-4 animate-pulse" />
                 SUPPLY MATCH ENGINE
               </h3>
@@ -262,16 +262,16 @@ export function HospitalRequests() {
               className={cn(
                 "rounded-2xl p-4 border-2 transition-all space-y-1.5",
                 simulatingStage >= 2
-                  ? "bg-indigo-500/10 border-indigo-500/50"
+                  ? "bg-primary/10 border-primary/50"
                   : "bg-card border-border/60 opacity-60"
               )}
             >
               <div className="flex items-center justify-between">
                 <span className="text-xs font-extrabold text-foreground flex items-center gap-2">
-                  <Building2 className="size-4 text-indigo-600" />
+                  <Building2 className="size-4 text-primary" />
                   {simulatingStage >= 2 ? "✓ STEP 2 — NEARBY BLOOD BANKS" : "○ STEP 2 — NEARBY BLOOD BANKS"}
                 </span>
-                <span className="text-[11px] font-bold bg-indigo-200 dark:bg-indigo-950 text-indigo-800 dark:text-indigo-200 px-2.5 py-0.5 rounded-full">
+                <span className="text-[11px] font-bold bg-primary-soft text-primary px-2.5 py-0.5 rounded-full">
                   {simulatingStage >= 2 ? "1 unit found · 4.2 km away" : "Searching nearby blood banks..."}
                 </span>
               </div>
@@ -323,9 +323,9 @@ export function HospitalRequests() {
               Request Status Vertical Timeline
             </h3>
 
-            <div className="relative pl-6 space-y-4 border-l-2 border-indigo-500/30 ml-2 text-xs">
+            <div className="relative pl-6 space-y-4 border-l-2 border-primary/30 ml-2 text-xs">
               <div className="relative">
-                <span className="absolute -left-[31px] top-0 flex size-5 items-center justify-center rounded-full bg-indigo-600 text-white text-[10px] font-bold">
+                <span className="absolute -left-[31px] top-0 flex size-5 items-center justify-center rounded-full bg-primary text-white text-[10px] font-bold">
                   ✓
                 </span>
                 <p className="font-extrabold text-foreground">Request Created</p>
@@ -333,7 +333,7 @@ export function HospitalRequests() {
               </div>
 
               <div className="relative">
-                <span className="absolute -left-[31px] top-0 flex size-5 items-center justify-center rounded-full bg-indigo-600 text-white text-[10px] font-bold">
+                <span className="absolute -left-[31px] top-0 flex size-5 items-center justify-center rounded-full bg-primary text-white text-[10px] font-bold">
                   ✓
                 </span>
                 <p className="font-extrabold text-foreground">Hospital Inventory Checked</p>
@@ -341,7 +341,7 @@ export function HospitalRequests() {
               </div>
 
               <div className="relative">
-                <span className="absolute -left-[31px] top-0 flex size-5 items-center justify-center rounded-full bg-indigo-600 text-white text-[10px] font-bold">
+                <span className="absolute -left-[31px] top-0 flex size-5 items-center justify-center rounded-full bg-primary text-white text-[10px] font-bold">
                   ✓
                 </span>
                 <p className="font-extrabold text-foreground">1 Unit Reserved</p>
@@ -349,7 +349,7 @@ export function HospitalRequests() {
               </div>
 
               <div className="relative">
-                <span className="absolute -left-[31px] top-0 flex size-5 items-center justify-center rounded-full bg-indigo-600 text-white text-[10px] font-bold">
+                <span className="absolute -left-[31px] top-0 flex size-5 items-center justify-center rounded-full bg-primary text-white text-[10px] font-bold">
                   ✓
                 </span>
                 <p className="font-extrabold text-foreground">Blood Bank Search Started</p>
@@ -357,7 +357,7 @@ export function HospitalRequests() {
               </div>
 
               <div className="relative">
-                <span className="absolute -left-[31px] top-0 flex size-5 items-center justify-center rounded-full bg-indigo-600 text-white text-[10px] font-bold">
+                <span className="absolute -left-[31px] top-0 flex size-5 items-center justify-center rounded-full bg-primary text-white text-[10px] font-bold">
                   ✓
                 </span>
                 <p className="font-extrabold text-foreground">Donors Notified</p>
@@ -381,7 +381,7 @@ export function HospitalRequests() {
         <DialogContent className="sm:max-w-md rounded-3xl p-6">
           <DialogHeader>
             <DialogTitle className="text-lg font-black flex items-center gap-2">
-              <Hospital className="size-5 text-indigo-600" />
+              <Hospital className="size-5 text-primary" />
               Create Hospital Blood Request
             </DialogTitle>
           </DialogHeader>
@@ -452,7 +452,7 @@ export function HospitalRequests() {
 
             <Button
               type="submit"
-              className="w-full h-12 rounded-2xl font-extrabold bg-indigo-600 text-white hover:bg-indigo-700 mt-2"
+              className="w-full h-12 rounded-2xl font-extrabold bg-primary text-white hover:bg-primary-dark mt-2"
             >
               RUN 3-STAGE SUPPLY MATCH ENGINE ⚡
             </Button>
@@ -462,3 +462,4 @@ export function HospitalRequests() {
     </div>
   );
 }
+

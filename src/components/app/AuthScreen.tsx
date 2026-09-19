@@ -230,7 +230,7 @@ export function AuthScreen({ open, onOpenChange, defaultMode = "signin" }: AuthS
                   onClick={() => setRole("hospital")}
                   className={cn(
                     "p-2 rounded-xl border flex flex-col items-center gap-1 transition-all cursor-pointer",
-                    role === "hospital" ? "bg-indigo-600 text-white border-indigo-600" : "bg-card text-foreground"
+                    role === "hospital" ? "bg-primary text-white border-primary" : "bg-card text-foreground"
                   )}
                 >
                   <Hospital className="size-3.5" />
@@ -242,7 +242,7 @@ export function AuthScreen({ open, onOpenChange, defaultMode = "signin" }: AuthS
                   onClick={() => setRole("blood_bank")}
                   className={cn(
                     "p-2 rounded-xl border flex flex-col items-center gap-1 transition-all cursor-pointer",
-                    role === "blood_bank" ? "bg-purple-600 text-white border-purple-600" : "bg-card text-foreground"
+                    role === "blood_bank" ? "bg-primary text-white border-primary" : "bg-card text-foreground"
                   )}
                 >
                   <Building2 className="size-3.5" />

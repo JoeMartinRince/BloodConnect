@@ -36,11 +36,11 @@ export function HospitalInventory() {
       <div className="rounded-3xl bg-card p-5 sm:p-6 shadow-card border border-border/60">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="flex size-11 items-center justify-center rounded-2xl bg-indigo-600 text-white font-bold">
+            <div className="flex size-11 items-center justify-center rounded-2xl bg-primary text-white font-bold">
               <Boxes className="size-6" />
             </div>
             <div>
-              <span className="text-xs font-bold uppercase tracking-wider text-indigo-600">Hospital Inventory</span>
+              <span className="text-xs font-bold uppercase tracking-wider text-primary">Hospital Inventory</span>
               <h1 className="text-xl sm:text-2xl font-black text-foreground">Blood Inventory & Expiry Management</h1>
               <p className="text-xs text-muted-foreground">Manage blood units, reserved stock, batch shelf-life & reservations.</p>
             </div>
@@ -105,8 +105,8 @@ export function HospitalInventory() {
               className={cn(
                 "rounded-3xl p-4 border-2 transition-all cursor-pointer shadow-card space-y-2.5 text-center relative overflow-hidden",
                 isSelected
-                  ? "bg-indigo-500/10 border-indigo-600 ring-2 ring-indigo-600/20 shadow-glow"
-                  : "bg-card border-border/70 hover:border-indigo-500/40"
+                  ? "bg-primary/10 border-primary ring-2 ring-primary/20 shadow-glow"
+                  : "bg-card border-border/70 hover:border-primary/40"
               )}
             >
               <div className="flex items-center justify-between">
@@ -128,7 +128,7 @@ export function HospitalInventory() {
                   </div>
                   <div className="flex justify-between">
                     <span>Reserved:</span>
-                    <strong className="text-indigo-600">{item.reservedUnits}</strong>
+                    <strong className="text-primary">{item.reservedUnits}</strong>
                   </div>
                   <div className="flex justify-between">
                     <span>Issued:</span>
@@ -144,8 +144,8 @@ export function HospitalInventory() {
               <Button
                 size="sm"
                 className={cn(
-                  "w-full h-8 rounded-xl font-bold text-xs mt-1",
-                  isSelected ? "bg-indigo-600 text-white" : "bg-muted text-foreground hover:bg-indigo-500/10"
+                  "w-full h-8 rounded-xl font-bold text-xs mt-1 border transition-colors",
+                  isSelected ? "bg-primary text-white border-primary" : "bg-white text-primary border-primary/20 hover:bg-primary-soft"
                 )}
               >
                 Manage Stock
@@ -157,7 +157,7 @@ export function HospitalInventory() {
 
       {/* DETAILED INVENTORY MANAGEMENT PANEL FOR SELECTED GROUP */}
       {selectedGroup && activeItem && (
-        <div className="rounded-3xl bg-card p-6 shadow-glow border-2 border-indigo-500/40 space-y-5 animate-fade-up">
+        <div className="rounded-3xl bg-card p-6 shadow-glow border-2 border-primary/40 space-y-5 animate-fade-up">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border/60 pb-4">
             <div className="flex items-center gap-3">
               <BloodGroupBadge group={selectedGroup} size="lg" />
@@ -180,7 +180,7 @@ export function HospitalInventory() {
               <Button
                 size="sm"
                 onClick={handleAddUnits}
-                className="rounded-xl font-bold bg-indigo-600 text-white hover:bg-indigo-700 h-9"
+                className="rounded-xl font-bold bg-primary hover:bg-primary-dark text-white h-9"
               >
                 <Plus className="size-4 mr-1" />
                 Add Batch
@@ -195,9 +195,9 @@ export function HospitalInventory() {
               <span className="text-2xl font-black text-emerald-600 block mt-0.5">{activeItem.availableUnits}</span>
             </div>
 
-            <div className="rounded-2xl bg-indigo-500/10 p-3.5 border border-indigo-500/30 text-center">
-              <span className="text-[10px] font-extrabold uppercase text-indigo-700">Reserved</span>
-              <span className="text-2xl font-black text-indigo-600 block mt-0.5">{activeItem.reservedUnits}</span>
+            <div className="rounded-2xl bg-primary/10 p-3.5 border border-primary/30 text-center">
+              <span className="text-[10px] font-extrabold uppercase text-primary">Reserved</span>
+              <span className="text-2xl font-black text-primary block mt-0.5">{activeItem.reservedUnits}</span>
             </div>
 
             <div className="rounded-2xl bg-muted/60 p-3.5 border border-border/60 text-center">
@@ -250,7 +250,7 @@ export function HospitalInventory() {
 
             <Button
               onClick={handleAddUnits}
-              className="w-full h-10 rounded-xl font-bold bg-indigo-600 text-white hover:bg-indigo-700"
+              className="w-full h-10 rounded-xl font-bold bg-primary hover:bg-primary-dark text-white"
             >
               + Confirm Add {addUnitsInput} Unit(s) Batch to {selectedGroup} Inventory
             </Button>

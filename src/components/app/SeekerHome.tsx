@@ -150,13 +150,13 @@ export function SeekerHome({ onStartCreateRequest, onSelectTab }: SeekerHomeProp
         {/* 2-Way Results Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* CHOICE 1: NEARBY BLOOD BANKS */}
-          <div className="rounded-2xl bg-indigo-500/10 p-4 border border-indigo-500/30 space-y-3">
+          <div className="rounded-2xl bg-primary/10 p-4 border border-primary/30 space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-extrabold text-indigo-700 dark:text-indigo-400 flex items-center gap-1.5">
+              <span className="text-xs font-extrabold text-primary flex items-center gap-1.5">
                 <Building2 className="size-4" />
                 CHOICE 1: Nearby Blood Banks ({stockAtBanks.length})
               </span>
-              <span className="text-[10px] font-bold bg-indigo-200 dark:bg-indigo-950 text-indigo-800 dark:text-indigo-200 px-2 py-0.5 rounded-full">
+              <span className="text-[10px] font-bold bg-primary-soft text-primary px-2 py-0.5 rounded-full">
                 Instant Stock
               </span>
             </div>
@@ -171,12 +171,12 @@ export function SeekerHome({ onStartCreateRequest, onSelectTab }: SeekerHomeProp
                     </div>
                     <p className="text-[11px] text-muted-foreground">{bank.address}</p>
                     <div className="pt-1 flex items-center justify-between">
-                      <span className="text-[10px] font-bold text-indigo-600 bg-indigo-50 dark:bg-indigo-950 px-2 py-0.5 rounded-full">
+                      <span className="text-[10px] font-bold text-primary bg-primary-soft px-2 py-0.5 rounded-full">
                         {selectedGroup} Available in Stock
                       </span>
                       <Button
                         size="sm"
-                        className="h-7 px-2.5 text-[11px] font-bold bg-indigo-600 text-white hover:bg-indigo-700"
+                        className="h-7 px-2.5 text-[11px] font-bold bg-primary text-white hover:bg-primary-dark"
                         onClick={() => toast.success(`Request sent to ${bank.name} for ${selectedGroup} blood.`)}
                       >
                         Request Stock

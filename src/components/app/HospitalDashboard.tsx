@@ -42,7 +42,7 @@ export function HospitalDashboard({ onSelectTab, onStartSupplyRequest }: Hospita
       <div className="rounded-3xl bg-card p-5 sm:p-6 shadow-card border border-border/60 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-indigo-600 flex items-center gap-1.5">
+            <span className="text-xs font-bold uppercase tracking-wider text-primary flex items-center gap-1.5">
               <Hospital className="size-4" />
               Pushpagiri Medical College Hospital
             </span>
@@ -64,7 +64,7 @@ export function HospitalDashboard({ onSelectTab, onStartSupplyRequest }: Hospita
         <Button
           onClick={onStartSupplyRequest}
           size="lg"
-          className="rounded-2xl font-extrabold bg-indigo-600 hover:bg-indigo-700 text-white h-11 px-5 shadow-md shrink-0 text-xs sm:text-sm"
+          className="rounded-2xl font-extrabold bg-primary hover:bg-primary-dark text-white h-11 px-5 shadow-md shrink-0 text-xs sm:text-sm"
         >
           <Plus className="size-4 mr-1.5" />
           + New Blood Request
@@ -108,7 +108,7 @@ export function HospitalDashboard({ onSelectTab, onStartSupplyRequest }: Hospita
                 </span>
                 <span className="text-muted-foreground hidden sm:inline">·</span>
                 <span className="text-muted-foreground">
-                  Status: <strong className="text-indigo-600 uppercase">SEARCHING DONORS</strong>
+                  Status: <strong className="text-primary uppercase">SEARCHING DONORS</strong>
                 </span>
               </div>
             </div>
@@ -140,7 +140,7 @@ export function HospitalDashboard({ onSelectTab, onStartSupplyRequest }: Hospita
         <div className="rounded-3xl bg-card p-4 shadow-card border border-border/60">
           <p className="text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">Units Issued</p>
           <div className="mt-2 flex items-baseline justify-between">
-            <span className="text-3xl font-black text-indigo-600">27</span>
+            <span className="text-3xl font-black text-primary">27</span>
             <span className="text-xs font-semibold text-muted-foreground">units</span>
           </div>
         </div>
@@ -168,21 +168,21 @@ export function HospitalDashboard({ onSelectTab, onStartSupplyRequest }: Hospita
       <div className="rounded-3xl bg-card p-5 shadow-card border border-border/60 space-y-3">
         <div className="flex items-center justify-between border-b border-border/60 pb-3">
           <div className="flex items-center gap-2">
-            <Building2 className="size-5 text-indigo-600" />
+            <Building2 className="size-5 text-primary" />
             <h2 className="text-base font-extrabold text-foreground">DISTRICT BLOOD NETWORK</h2>
           </div>
-          <span className="text-xs font-bold text-indigo-600 bg-indigo-50 dark:bg-indigo-950 px-2.5 py-0.5 rounded-full">
+          <span className="text-xs font-bold text-primary bg-primary-soft dark:bg-primary/20 px-2.5 py-0.5 rounded-full">
             Pathanamthitta Hub
           </span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-          <div className="rounded-2xl bg-indigo-500/10 p-3.5 border border-indigo-500/30 flex items-center justify-between">
+          <div className="rounded-2xl bg-primary/10 p-3.5 border border-primary/20 flex items-center justify-between">
             <div>
-              <span className="font-extrabold text-indigo-700 dark:text-indigo-400 block">6 Blood Centres</span>
+              <span className="font-extrabold text-primary block">6 Blood Centres</span>
               <span className="text-muted-foreground text-[11px]">Online in Pathanamthitta</span>
             </div>
-            <span className="size-2 rounded-full bg-indigo-600 animate-pulse" />
+            <span className="size-2 rounded-full bg-primary animate-pulse" />
           </div>
 
           <div className="rounded-2xl bg-emerald-500/10 p-3.5 border border-emerald-500/30 flex items-center justify-between">
@@ -207,7 +207,7 @@ export function HospitalDashboard({ onSelectTab, onStartSupplyRequest }: Hospita
       <div className="rounded-3xl bg-card p-5 shadow-card border border-border/60 space-y-4">
         <div className="flex items-center justify-between border-b border-border/60 pb-3">
           <div className="flex items-center gap-2">
-            <Boxes className="size-5 text-indigo-600" />
+            <Boxes className="size-5 text-primary" />
             <h2 className="text-base font-extrabold text-foreground">HOSPITAL INVENTORY</h2>
           </div>
 
@@ -215,7 +215,7 @@ export function HospitalDashboard({ onSelectTab, onStartSupplyRequest }: Hospita
             size="sm"
             variant="outline"
             onClick={() => onSelectTab("inventory")}
-            className="rounded-full border-indigo-500/30 text-indigo-600 font-bold hover:bg-indigo-50 text-xs"
+            className="rounded-full border-primary/30 text-primary font-bold hover:bg-primary-soft text-xs"
           >
             Manage Inventory
             <ArrowRight className="size-3.5 ml-1" />
@@ -234,7 +234,7 @@ export function HospitalDashboard({ onSelectTab, onStartSupplyRequest }: Hospita
                   "rounded-2xl p-3 border transition-all cursor-pointer text-center space-y-1",
                   isLow
                     ? "bg-amber-500/10 border-amber-500/40 hover:border-amber-500"
-                    : "bg-muted/40 border-border/60 hover:border-indigo-500/50 hover:bg-indigo-500/5"
+                    : "bg-muted/40 border-border/60 hover:border-primary/50 hover:bg-primary/5"
                 )}
               >
                 <BloodGroupBadge group={bg} size="sm" />
@@ -242,7 +242,7 @@ export function HospitalDashboard({ onSelectTab, onStartSupplyRequest }: Hospita
                   {item.availableUnits} <span className="text-[10px] font-bold text-muted-foreground">units</span>
                 </span>
                 {item.reservedUnits > 0 && (
-                  <span className="text-[9px] font-bold text-indigo-600 bg-indigo-50 dark:bg-indigo-950 px-1.5 py-0.5 rounded-full block">
+                  <span className="text-[9px] font-bold text-primary bg-primary-soft px-1.5 py-0.5 rounded-full block">
                     {item.reservedUnits} Reserved
                   </span>
                 )}
@@ -295,14 +295,14 @@ export function HospitalDashboard({ onSelectTab, onStartSupplyRequest }: Hospita
             </div>
             <p className="text-xs text-muted-foreground">Main District Hub, Pathanamthitta</p>
             <div className="pt-1 flex items-center justify-between">
-              <span className="text-[11px] font-bold text-indigo-600 bg-indigo-50 dark:bg-indigo-950 px-2 py-0.5 rounded-full">
+              <span className="text-[11px] font-bold text-primary bg-primary-soft px-2 py-0.5 rounded-full">
                 O+ 8 units available
               </span>
               <Button
                 size="sm"
                 variant="outline"
                 onClick={() => onSelectTab("requests")}
-                className="h-7 text-[11px] font-bold border-indigo-500/30 text-indigo-600 hover:bg-indigo-50"
+                className="h-7 text-[11px] font-bold border-primary/30 text-primary hover:bg-primary-soft"
               >
                 Request Inter-Bank
               </Button>
@@ -316,14 +316,14 @@ export function HospitalDashboard({ onSelectTab, onStartSupplyRequest }: Hospita
             </div>
             <p className="text-xs text-muted-foreground">Kuttapuzha, Thiruvalla</p>
             <div className="pt-1 flex items-center justify-between">
-              <span className="text-[11px] font-bold text-indigo-600 bg-indigo-50 dark:bg-indigo-950 px-2 py-0.5 rounded-full">
+              <span className="text-[11px] font-bold text-primary bg-primary-soft px-2 py-0.5 rounded-full">
                 O+ 5 units available
               </span>
               <Button
                 size="sm"
                 variant="outline"
                 onClick={() => onSelectTab("requests")}
-                className="h-7 text-[11px] font-bold border-indigo-500/30 text-indigo-600 hover:bg-indigo-50"
+                className="h-7 text-[11px] font-bold border-primary/30 text-primary hover:bg-primary-soft"
               >
                 Request Inter-Bank
               </Button>
@@ -334,3 +334,4 @@ export function HospitalDashboard({ onSelectTab, onStartSupplyRequest }: Hospita
     </div>
   );
 }
+
