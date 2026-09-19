@@ -238,6 +238,47 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
       /* ignore corrupt storage */
     }
     setHydrated(true);
+
+    // Hydrate Supabase Session
+    import("@/lib/supabase").then(({ supabase }) => {
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        if (session?.user) {
+          import("@/services/supabaseService").then(({ fetchProfile }) => {
+            fetchProfile(session.user.id).then((profile) => {
+              if (profile) {
+                setState((s) => ({
+                  ...s,
+                  user: profile,
+                  activeRole: profile.role || s.activeRole,
+                }));
+              }
+            });
+          });
+        }
+      });
+
+      const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
+        if (session?.user) {
+          import("@/services/supabaseService").then(({ fetchProfile }) => {
+            fetchProfile(session.user.id).then((profile) => {
+              if (profile) {
+                setState((s) => ({
+                  ...s,
+                  user: profile,
+                  activeRole: profile.role || s.activeRole,
+                }));
+              }
+            });
+          });
+        } else {
+          setState((s) => ({ ...s, user: null }));
+        }
+      });
+
+      return () => {
+        authListener.subscription.unsubscribe();
+      };
+    });
   }, []);
 
   useEffect(() => {

@@ -19,6 +19,8 @@ import { useAppStore } from "@/hooks/useAppStore";
 import { Heart, Activity, User, Bell, Sparkles } from "lucide-react";
 import type { BloodGroup, UserRole } from "@/types";
 
+import { AuthScreen } from "@/components/app/AuthScreen";
+
 export const Route = createFileRoute("/")({
   component: Index,
 });
@@ -28,6 +30,7 @@ function Index() {
 
   const [activeTab, setActiveTab] = useState<string>("home");
   const [roleModalOpen, setRoleModalOpen] = useState<boolean>(false);
+  const [authOpen, setAuthOpen] = useState<boolean>(false);
   const [flowActive, setFlowActive] = useState<boolean>(false);
 
   const handleStartCreateRequest = (prefillGroup?: BloodGroup) => {
@@ -55,6 +58,9 @@ function Index() {
 
       {/* Role Selection Modal */}
       <RoleSelectionModal open={roleModalOpen} onOpenChange={setRoleModalOpen} />
+
+      {/* Real Supabase Auth Screen */}
+      <AuthScreen open={authOpen} onOpenChange={setAuthOpen} />
 
       {/* Demo Mode Floating Toolbar (Only visible when demoMode is true) */}
       {demoMode && <DemoModeToolbar onRunScenario={handleRunScenario} />}
@@ -119,7 +125,7 @@ function Index() {
                 <button
                   type="button"
                   onClick={() => setActiveTab("alerts")}
-                  className="relative flex size-9 items-center justify-center rounded-2xl bg-card border text-muted-foreground hover:text-foreground shadow-sm"
+                  className="relative flex size-9 items-center justify-center rounded-2xl bg-card border text-muted-foreground hover:text-foreground shadow-sm shrink-0"
                 >
                   <Bell className="size-4" />
                   {unreadCount > 0 && (
@@ -127,6 +133,18 @@ function Index() {
                       {unreadCount}
                     </span>
                   )}
+                </button>
+
+                {/* Supabase Account Button */}
+                <button
+                  type="button"
+                  onClick={() => setAuthOpen(true)}
+                  className="flex items-center gap-1.5 rounded-2xl bg-primary/10 border border-primary/20 px-3 py-1.5 text-xs font-extrabold text-primary hover:bg-primary/20 transition-all shadow-sm shrink-0 cursor-pointer"
+                >
+                  <User className="size-3.5" />
+                  <span className="truncate max-w-[80px]">
+                    {user ? user.name.split(" ")[0] : "Sign In"}
+                  </span>
                 </button>
               </div>
             </div>
